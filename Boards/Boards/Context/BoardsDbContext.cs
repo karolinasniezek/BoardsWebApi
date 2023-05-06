@@ -31,6 +31,14 @@ namespace Boards.Context
                 eb.Property(x => x.Activity).HasMaxLength(200);
                 eb.Property(x => x.RemainingWork).HasPrecision(14, 2);
                 eb.Property(x => x.Priority).HasDefaultValue(1);
+
+                eb.HasMany(w => w.Comments)
+                .WithOne(c => c.WorkItem)
+                .HasForeignKey(c => c.WorkItemId);
+
+                eb.HasOne(w => w.Author)
+                .WithMany(u => u.WorkItems)
+                .HasForeignKey(w => w.AuthorId);
             });
 
             modelBuilder.Entity<Comment>(eb =>
@@ -43,7 +51,6 @@ namespace Boards.Context
                 .HasOne(u => u.Address)
                 .WithOne(a => a.User)
                 .HasForeignKey<Address>(a => a.UserId);
-
         }
     }
 }
