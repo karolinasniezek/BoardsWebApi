@@ -1,6 +1,6 @@
 ﻿namespace Boards.Models
 {
-    public class Tags
+    public class Tag
     {
         public string Value { get; set; }
     }
