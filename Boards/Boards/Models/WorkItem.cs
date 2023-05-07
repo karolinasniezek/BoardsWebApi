@@ -22,5 +22,6 @@ namespace Boards.Models
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public Guid AuthorId { get; set; }
         public User Author { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }
