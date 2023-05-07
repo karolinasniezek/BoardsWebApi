@@ -6,10 +6,10 @@ namespace Boards.Context
 {
     public class BoardsDbContext : DbContext
     {
-        public BoardsDbContext(DbContextOptions options) : base(options)
+        public BoardsDbContext(DbContextOptions<BoardsDbContext> options) : base(options)
         {
-
         }
+
         public DbSet<WorkItem> WorkItems { get; set; }
         public DbSet<Epic> Epics { get; set; }
         public DbSet<Issue> Issues { get; set; }
@@ -19,10 +19,6 @@ namespace Boards.Context
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<State> States { get; set; }
-
-        public BoardsDbContext(DbContextOptions<BoardsDbContext> options) : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -78,6 +74,10 @@ namespace Boards.Context
             {
                 eb.Property(x => x.CreatedDate).HasDefaultValueSql("getutcdate()");
                 eb.Property(x => x.UpdatedDate).ValueGeneratedOnUpdate();
+                eb.HasOne(c => c.Author)
+                .WithMany(a => a.Comments)
+                .HasForeignKey(c => c.AuthorId)
+                .OnDelete(DeleteBehavior.NoAction);
             });
 
             modelBuilder.Entity<User>()
@@ -88,7 +88,7 @@ namespace Boards.Context
             modelBuilder.Entity<State>()
                 .Property(sm => sm.Value)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(60);
 
         }
     }
