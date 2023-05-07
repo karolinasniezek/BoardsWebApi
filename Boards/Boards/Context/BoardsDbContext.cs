@@ -90,6 +90,10 @@ namespace Boards.Context
                 .IsRequired()
                 .HasMaxLength(60);
 
+            modelBuilder.Entity<State>()
+                .HasData(new State() {Id = 1, Value = "To Do" }, 
+                new State() { Id = 2, Value = "Doing" }, 
+                new State() { Id = 3, Value = "Done" });
         }
     }
 }
